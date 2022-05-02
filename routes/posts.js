@@ -26,21 +26,28 @@ const getPagination = require('../controller/paginate')
 // })
 
 router.post('/addPost', postController, async (req, res) => {
-    const newPost = await new Post({
-        userID: req.body.userID,
-        image: req.file.path,
-        caption: req.body.caption
-    })
-
-    try {
-        const savePost = await newPost.save()
-        res.status(200).json({
-            post: savePost,
-            message: 'new post uploaded successfully'
+    const { image, caption, userID } = req.body
+    if (image) {
+        const newPost = await new Post({
+            userID: req.body.userID,
+            image: req.file.path,
+            caption: req.body.caption
         })
-    } catch (error) {
-        res.status(500).json({
-            message: error
+
+        try {
+            const savePost = await newPost.save()
+            res.status(200).json({
+                post: savePost,
+                message: 'new post uploaded successfully'
+            })
+        } catch (error) {
+            res.status(500).json({
+                message: error
+            })
+        }
+    } else {
+        res.json({
+            message: "image is required to create post"
         })
     }
 })
@@ -99,7 +106,7 @@ router.put('/comment/:id', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-    var pageNo = parseInt(req.query.pageNo)
+    var pageNo = parseInt(req.query.pageNo) || 1
     var size = parseInt(req.query.size)
     var query = {}
     if (pageNo < 0 || pageNo === 0) {
