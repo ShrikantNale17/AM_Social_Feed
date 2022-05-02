@@ -3,8 +3,11 @@ const router = require('express').Router()
 const Post = require('../models/post')
 const User = require('../models/user')
 const postController = require('../controller/uploadImage')
+const getPagination = require('../controller/paginate')
 
 router.get('/', async (req, res) => {
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(page, size);
     try {
         const posts = await Post.find()
         res.status(200).json(posts)

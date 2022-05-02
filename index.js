@@ -36,8 +36,8 @@ app.all('/*', (req, res, next) => {
         next()
     }
 })
-app.use('/users/SignUp', usersRouter)
-app.use('/users', auth, usersRouter)
+// app.use('/users/SignUp', usersRouter)
+app.use('/users', usersRouter)
 app.use('/posts', auth, postsRouter)
 
 app.listen(port, () => {

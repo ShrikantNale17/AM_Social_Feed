@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 
 const User = require('../models/user')
 const imageController = require('../controller/uploadImage')
+const auth = require('../controller/auth')
 
 router.get('/', async (req, res) => {
     try {
@@ -53,7 +54,7 @@ router.post('/SignUp', async (req, res) => {
     }
 })
 
-router.put('/edit-profile/addProfile-Pic/:id', imageController, async (req, res) => {
+router.put('/edit-profile/addProfile-Pic/:id', auth, imageController, async (req, res) => {
     if (req.body.userID === req.params.id) {
         try {
             // const user = await User.findById(req.body.userID)
@@ -95,7 +96,7 @@ router.put('/edit-profile/addProfile-Pic/:id', imageController, async (req, res)
 
 }) */
 
-router.put('/edit-profile/removeProfile-Pic/:id', imageController, async (req, res) => {
+router.put('/edit-profile/removeProfile-Pic/:id', auth, imageController, async (req, res) => {
     if (req.body.userID === req.params.id) {
         try {
             // const user = await User.findById(req.body.userID)
@@ -114,7 +115,7 @@ router.put('/edit-profile/removeProfile-Pic/:id', imageController, async (req, r
 
 })
 
-router.put('/edit-profile/userDetails/:id', async (req, res) => {
+router.put('/edit-profile/userDetails/:id', auth, async (req, res) => {
     if (req.body.userID === req.params.id) {
         try {
             // const user = await User.findById(req.body.userID)
@@ -133,7 +134,7 @@ router.put('/edit-profile/userDetails/:id', async (req, res) => {
 
 })
 
-router.put('/changePassword/:id', async (req, res) => {
+router.put('/changePassword/:id', auth, async (req, res) => {
     if (req.body.userID === req.params.id) {
         try {
             const user = await User.findById(req.body.userID)
@@ -167,7 +168,7 @@ router.put('/changePassword/:id', async (req, res) => {
 
 })
 
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', auth, async (req, res) => {
     try {
         await User.findByIdAndDelete(req.params.id)
         res.status(200).json('User deleted successfully')
