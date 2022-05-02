@@ -41,6 +41,12 @@ app.all('/*', (req, res, next) => {
 app.use('/users', usersRouter)
 app.use('/posts', auth, postsRouter)
 
+app.use('/*', (req, res) => {
+    res.json({
+        message: 'Page not found'
+    })
+})
+
 app.listen(port, () => {
     console.log("Server is running on port 8080");
 })
