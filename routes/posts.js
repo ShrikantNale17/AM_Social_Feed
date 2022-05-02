@@ -105,7 +105,7 @@ router.put('/comment/:id', async (req, res) => {
     }
 })
 
-router.get('/', async (req, res) => {
+router.get('/allPosts', async (req, res) => {
     var pageNo = parseInt(req.query.pageNo) || 1
     var size = parseInt(req.query.size)
     var query = {}
