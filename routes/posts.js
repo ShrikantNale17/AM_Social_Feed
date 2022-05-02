@@ -5,7 +5,7 @@ const User = require('../models/user')
 const postController = require('../controller/uploadImage')
 const getPagination = require('../controller/paginate')
 
-router.get('/', async (req, res) => {
+/* router.get('/', async (req, res) => {
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
     try {
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     } catch (err) {
         res.status(400).json(err)
     }
-})
+}) */
 
 // router.get('/post/:id', async (req, res) => {
 //     try {
@@ -96,6 +96,34 @@ router.put('/comment/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json(error)
     }
+})
+
+router.get('/', async (req, res) => {
+    var pageNo = parseInt(req.query.pageNo)
+    var size = parseInt(req.query.size)
+    var query = {}
+    if (pageNo < 0 || pageNo === 0) {
+        response = { "error": true, "message": "invalid page number, should start with 1" };
+        return res.json(response)
+    }
+    query.skip = size * (pageNo - 1)
+    query.limit = size
+    // Find some documents
+    Post.count({}, function (err, totalCount) {
+        if (err) {
+            response = { "error": true, "message": "Error fetching data" }
+        }
+        Post.find({}, {}, query, function (err, data) {
+            // Mongo command to fetch all data from collection.
+            if (err) {
+                response = { "error": true, "message": "Error fetching data" };
+            } else {
+                var totalPages = Math.ceil(totalCount / size)
+                response = { "error": false, "message": data, "pages": totalPages };
+            }
+            res.json(response);
+        });
+    })
 })
 
 // router.delete('/delete/:id', async (req, res) => {

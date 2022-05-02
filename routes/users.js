@@ -14,14 +14,14 @@ router.get('/', async (req, res) => {
     }
 })
 
-// router.get('/user/:id', async (req, res) => {
-//     try {
-//         const user = await User.findById(req.params.id)
-//         res.status(200).json(user)
-//     } catch (err) {
-//         res.status(400).json(err)
-//     }
-// })
+router.get('/user/:id', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        res.status(200).json(user)
+    } catch (err) {
+        res.status(400).json(err)
+    }
+})
 
 router.post('/SignUp', async (req, res) => {
     const { firstname, lastname, email, password } = req.body
