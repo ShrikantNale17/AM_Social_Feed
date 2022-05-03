@@ -45,7 +45,7 @@ app.use('/posts', auth, postsRouter)
 app.use(express.static(path.join(__dirname, "uploads")));
 app.use('/*', (req, res) => {
     res.json({
-        message: 'Page not found'
+        message: 'Url does not exist'
     })
 })
 
