@@ -16,14 +16,14 @@ const getPagination = require('../controller/paginate')
     }
 }) */
 
-// router.get('/post/:id', async (req, res) => {
-//     try {
-//         const posts = await Post.findById(req.params.id)
-//         res.status(200).json(posts)
-//     } catch (err) {
-//         res.status(400).json(err)
-//     }
-// })
+/* router.get('/post/:id', async (req, res) => {
+    try {
+        const posts = await Post.findById(req.params.id)
+        res.status(200).json(posts)
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}) */
 
 router.post('/addPost', postController, async (req, res) => {
     const { image, caption, userID } = req.body
