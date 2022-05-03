@@ -5,14 +5,14 @@ const User = require('../models/user')
 const imageController = require('../controller/uploadImage')
 const auth = require('../controller/auth')
 
-router.get('/', async (req, res) => {
+/* router.get('/', async (req, res) => {
     try {
         const users = await User.find()
         res.status(200).json(users)
     } catch (err) {
         res.status(400).json(err)
     }
-})
+}) */
 
 router.get('/user/:id', auth, async (req, res) => {
     try {

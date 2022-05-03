@@ -20,6 +20,9 @@ const postSchema = new mongoose.Schema({
     comments: {
         type: Array,
         default: []
+    },
+    user: {
+        type: Object
     }
 },
     {

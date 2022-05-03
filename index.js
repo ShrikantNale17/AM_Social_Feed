@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const cookieParser = require("cookie-parser")
 const cors = require('cors')
+const path = require('path')
 
 // const productsRouter = require('./routes/products')
 
@@ -22,6 +23,7 @@ const app = express()
 mongoose.connect(url, () => {
     console.log("connected successfully");
 })
+app.use(cors())
 app.use(cookieParser())
 
 app.use(express.json())
@@ -40,7 +42,7 @@ app.all('/*', (req, res, next) => {
 // app.use('/users/SignUp', usersRouter)
 app.use('/users', usersRouter)
 app.use('/posts', auth, postsRouter)
-
+app.use(express.static(path.join(__dirname, "uploads")));
 app.use('/*', (req, res) => {
     res.json({
         message: 'Page not found'

@@ -26,28 +26,37 @@ const getPagination = require('../controller/paginate')
 }) */
 
 router.post('/addPost', postController, async (req, res) => {
-    const { image, caption, userID } = req.body
-    if (image) {
-        const newPost = await new Post({
-            userID: req.body.userID,
-            image: req.file.path,
-            caption: req.body.caption
-        })
-
-        try {
-            const savePost = await newPost.save()
-            res.status(200).json({
-                post: savePost,
-                message: 'new post uploaded successfully'
+    const user = await User.findById(req.body.userID)
+    if (user) {
+        const { _id, password, email, createdAt, updatedAt, __v, ...other } = user._doc
+        console.log(other);
+        if (req.file) {
+            const newPost = await new Post({
+                userID: req.body.userID,
+                user: other,
+                image: req.file.filename,
+                caption: req.body.caption
             })
-        } catch (error) {
-            res.status(500).json({
-                message: error
+
+            try {
+                const savePost = await newPost.save()
+                res.status(200).json({
+                    post: savePost,
+                    message: 'new post uploaded successfully'
+                })
+            } catch (error) {
+                res.status(500).json({
+                    message: error
+                })
+            }
+        } else {
+            res.json({
+                message: "image is required to create post"
             })
         }
     } else {
         res.json({
-            message: "image is required to create post"
+            message: 'user not found'
         })
     }
 })
@@ -113,7 +122,7 @@ router.get('/allPosts', async (req, res) => {
         response = { "error": true, "message": "invalid page number, should start with 1" };
         return res.json(response)
     }
-    query.offset = size * (pageNo - 1)
+    query.skip = size * (pageNo - 1)
     query.limit = size
     // Find some documents
     Post.count({}, function (err, totalCount) {
