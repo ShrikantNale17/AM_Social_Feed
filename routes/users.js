@@ -46,6 +46,7 @@ router.post("/SignUp", async (req, res) => {
     } else {
       res.status(200).json("Email already exists");
     }
+<<<<<<< HEAD
   } else {
     res.json({
       message: "Please enter all details",
@@ -70,6 +71,23 @@ router.put(
       } catch (error) {
         res.status(500).json(error);
       }
+=======
+})
+
+router.put('/edit-profile/addProfile-Pic/:id', auth, imageController, async (req, res) => {
+    if (req.user.id === req.params.id) {
+        try {
+            // const user = await User.findById(req.body.userID)
+            await User.findByIdAndUpdate(req.params.id, {
+                $set: { ...req.body, image: req.file.filename }
+            })
+            res.status(200).json({
+                message: 'Profile picture added successfully'
+            })
+        } catch (error) {
+            res.status(500).json(error)
+        }
+>>>>>>> 7343b5d58323f6ba47c147d53298b1dfe26e7545
     } else {
       res.json({
         message: "You are not authorized person",
@@ -99,6 +117,7 @@ router.put(
 
 }) */
 
+<<<<<<< HEAD
 router.put(
   "/edit-profile/removeProfile-Pic/:id",
   auth,
@@ -114,6 +133,19 @@ router.put(
       } catch (error) {
         res.status(500).json(error);
       }
+=======
+router.put('/edit-profile/removeProfile-Pic/:id', auth, imageController, async (req, res) => {
+    if (req.user.id === req.params.id) {
+        try {
+            // const user = await User.findById(req.body.userID)
+            await User.findByIdAndUpdate(req.params.id, { ...req.body, image: '' })
+            res.status(200).json({
+                message: 'Profile picture removed successfully'
+            })
+        } catch (error) {
+            res.status(500).json(error)
+        }
+>>>>>>> 7343b5d58323f6ba47c147d53298b1dfe26e7545
     } else {
       res.json({
         message: "You are not authorized person",
@@ -122,6 +154,7 @@ router.put(
   }
 );
 
+<<<<<<< HEAD
 router.put("/edit-profile/userDetails/:id", auth, async (req, res) => {
   if (req.params.id) {
     try {
@@ -162,6 +195,38 @@ router.put("/changePassword/:id", auth, async (req, res) => {
                 message: "Passord updated successfully",
                 user: user,
               });
+=======
+})
+
+router.put('/edit-profile/userDetails/:id', auth, async (req, res) => {
+    console.log(req.user);
+    if (req.user.id === req.params.id) {
+        try {
+            // const user = await User.findById(req.body.userID)
+            await User.findByIdAndUpdate(req.params.id, { ...req.body })
+            res.status(200).json({
+                message: 'User details updated successfully'
+            })
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    } else {
+        res.json({
+            message: 'You are not authorized person'
+        })
+    }
+
+})
+
+router.put('/changePassword/:id', auth, async (req, res) => {
+    if (req.user.id === req.params.id) {
+        try {
+            const user = await User.findById(req.user.id)
+            if (!user) {
+                res.status(400).json({
+                    message: "User not found"
+                })
+>>>>>>> 7343b5d58323f6ba47c147d53298b1dfe26e7545
             } else {
               res
                 .status(400)

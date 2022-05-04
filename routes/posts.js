@@ -26,13 +26,13 @@ const getPagination = require('../controller/paginate')
 }) */
 
 router.post('/addPost', postController, async (req, res) => {
-    const user = await User.findById(req.body.userID)
+    const user = await User.findById(req.user.id)
     if (user) {
         const { _id, password, email, createdAt, updatedAt, __v, ...other } = user._doc
         console.log(other);
         if (req.file) {
             const newPost = await new Post({
-                userID: req.body.userID,
+                userID: req.user.id,
                 user: other,
                 image: req.file.filename,
                 caption: req.body.caption
@@ -64,15 +64,15 @@ router.post('/addPost', postController, async (req, res) => {
 router.put('/like/:id', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)
-        if (!post.likes.includes(req.body.userID)) {
-            await post.updateOne({ $push: { likes: req.body.userID } })
+        if (!post.likes.includes(req.user.id)) {
+            await post.updateOne({ $push: { likes: req.user.id } })
             const a1 = await Post.findById(req.params.id)
             res.status(200).json({
                 message: 'post liked ',
                 likes: a1.likes.length
             })
         } else {
-            await post.updateOne({ $pull: { likes: req.body.userID } })
+            await post.updateOne({ $pull: { likes: req.user.id } })
             const a1 = await Post.findById(req.params.id)
             res.status(200).json({
                 message: 'post unliked',
@@ -87,13 +87,16 @@ router.put('/like/:id', async (req, res) => {
 router.put('/comment/:id', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id)
-        const user = await User.findById(req.body.userID)
+        const user = await User.findById(req.user.id)
         if (post) {
             await post.updateOne({
                 $push: {
                     comments: {
-                        userID: req.body.userID,
-                        user: user.firstname + ' ' + user.lastname,
+                        userID: req.user.id,
+                        user: {
+                            name: user.firstname + ' ' + user.lastname,
+                            image: user.image
+                        },
                         comment: req.body.comment
                     }
                 }
