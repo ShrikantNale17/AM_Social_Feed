@@ -138,7 +138,7 @@ router.put('/edit-profile/userDetails/:id', auth, async (req, res) => {
 router.put('/changePassword/:id', auth, async (req, res) => {
     if (req.user.id === req.params.id) {
         try {
-            const user = await User.findById(req.body.userID)
+            const user = await User.findById(req.user.id)
             if (!user) {
                 res.status(400).json({
                     message: "User not found"
