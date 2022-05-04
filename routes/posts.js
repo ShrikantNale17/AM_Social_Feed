@@ -135,7 +135,7 @@ router.get('/allPosts', async (req, res) => {
                 response = { "error": true, "message": "Error fetching data" };
             } else {
                 var totalPages = Math.ceil(totalCount / size)
-                response = { "error": false, "message": data, "pages": totalPages };
+                response = { "error": false, "message": data.reverse(), "pages": totalPages };
             }
             res.json(response);
         });
