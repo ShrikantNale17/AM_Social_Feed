@@ -59,7 +59,7 @@ router.put('/edit-profile/addProfile-Pic/:id', auth, imageController, async (req
         try {
             // const user = await User.findById(req.body.userID)
             await User.findByIdAndUpdate(req.params.id, {
-                $set: { ...req.body, image: req.file.path }
+                $set: { ...req.body, image: req.file.filename }
             })
             res.status(200).json({
                 message: 'Profile picture added successfully'
