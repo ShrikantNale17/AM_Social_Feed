@@ -55,7 +55,7 @@ router.post('/SignUp', async (req, res) => {
 })
 
 router.put('/edit-profile/addProfile-Pic/:id', auth, imageController, async (req, res) => {
-    if (req.body.userID === req.params.id) {
+    if (req.user.id === req.params.id) {
         try {
             // const user = await User.findById(req.body.userID)
             await User.findByIdAndUpdate(req.params.id, {
@@ -97,7 +97,7 @@ router.put('/edit-profile/addProfile-Pic/:id', auth, imageController, async (req
 }) */
 
 router.put('/edit-profile/removeProfile-Pic/:id', auth, imageController, async (req, res) => {
-    if (req.body.userID === req.params.id) {
+    if (req.user.id === req.params.id) {
         try {
             // const user = await User.findById(req.body.userID)
             await User.findByIdAndUpdate(req.params.id, { ...req.body, image: '' })
@@ -116,7 +116,8 @@ router.put('/edit-profile/removeProfile-Pic/:id', auth, imageController, async (
 })
 
 router.put('/edit-profile/userDetails/:id', auth, async (req, res) => {
-    if (req.body.userID === req.params.id) {
+    console.log(req.user);
+    if (req.user.id === req.params.id) {
         try {
             // const user = await User.findById(req.body.userID)
             await User.findByIdAndUpdate(req.params.id, { ...req.body })
@@ -135,7 +136,7 @@ router.put('/edit-profile/userDetails/:id', auth, async (req, res) => {
 })
 
 router.put('/changePassword/:id', auth, async (req, res) => {
-    if (req.body.userID === req.params.id) {
+    if (req.user.id === req.params.id) {
         try {
             const user = await User.findById(req.body.userID)
             if (!user) {
